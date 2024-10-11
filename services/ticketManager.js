@@ -1,7 +1,7 @@
 const EventEmitter = require("events");
-const myEmitter = require("./events/eventEmitter");
-const DatabaseService = require("./services/databaseService"); // simulate database by logging to the console
-const EmailService = require("./services/emailService");
+const myEmitter = require("../events/eventEmitter");
+const DatabaseService = require("./databaseService"); // simulate database by logging to the console
+const EmailService = require("./emailService");
 
 class TicketManager extends EventEmitter {
   constructor(supply) {
