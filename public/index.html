@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Manager</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        margin: auto;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background-color: #ccc;
+      }
+      .message {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="ticketForm">
+      <h2>Buy Ticket</h2>
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" required />
+
+      <label for="numberOfTickets">Number of Tickets</label>
+      <input
+        type="number"
+        id="numberOfTickets"
+        name="numberOfTickets"
+        required
+      />
+
+      <button type="submit">Buy Ticket</button>
+      <p class="message" id="responseMessage"></p>
+    </form>
+
+    <script>
+      const form = document.getElementById("ticketForm");
+      const responseMessage = document.getElementById("responseMessage");
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const numberOfTickets = Number(
+          document.getElementById("numberOfTickets").value
+        );
+
+        try {
+          const response = await fetch("/tickets", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, numberOfTickets }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            responseMessage.textContent = `${data.message} Remaining tickets: ${data.remainingTickets}`;
+            responseMessage.style.color = "green";
+          } else {
+            responseMessage.textContent = `Error: ${data.error}`;
+            responseMessage.style.color = "red";
+          }
+        } catch (error) {
+          responseMessage.textContent =
+            "Error: Unable to process your request!";
+          responseMessage.style.color = "red";
+        }
+      });
+    </script>
+  </body>
+</html>
