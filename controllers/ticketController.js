@@ -1,4 +1,4 @@
-const TicketManager = require("../ticketManager");
+const TicketManager = require("../services/ticketManager");
 const ticketManager = new TicketManager(10);
 
 const purchaseTicket = (req, res) => {
